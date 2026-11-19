@@ -1,6 +1,7 @@
 # MeteoLive PRO – Interaktywne Centrum Pogody
 
-**Autor:** Karol Szymczak nr albumu 21504 
+**Autor:** Karol Szymczak nr albumu 21504
+
 **Adres wdrożenia:** https://karol-szy.github.io/MeteoLive-PRO/
 **Repozytorium Git:** [[https://github.com/Karol-Szy/MeteoLive-PRO.git](https://github.com/Karol-Szy/MeteoLive-PRO.git)]  
 **Przedmiot:** Interaktywna grafika i wizualizacja danych na stronach WWW, AHNS Radom  
