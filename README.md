@@ -106,7 +106,7 @@ Przy projekcie korzystałem z trzech narzędzi AI:
 
 Performance: 89 | Accessibility: 95 | Best Practices: 100 | SEO: 100
 
-Pomiar z 19.11.2026, tryb Desktop, wersja lokalna (`http://localhost:5500`), Lighthouse 13.5. Pełny raport: `docs/lighthouse.html`. Po pomiarze poprawiono dwie uwagi z kategorii Accessibility: kontrast etykiety dnia w prognozie godzinowej oraz wyróżnienie linków w tekście (podkreślenie).
+Pomiar z 19.11.2026, tryb Desktop, wersja online (https://karol-szy.github.io/MeteoLive-PRO/). Pełny raport: `docs/lighthouse.html`.
 
 ## Wdrożenie
 
