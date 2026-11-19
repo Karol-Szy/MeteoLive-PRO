@@ -37,11 +37,11 @@ export function initGallery() {
   };
 
   ITEMS.forEach((item, i) => {
-    const tile = html('button', { className: 'gallery-tile', attrs: { type: 'button', 'aria-label': `Otwórz obraz ${i + 1} z ${ITEMS.length}: ${item.title}` } });
+    const tile = html('button', { className: 'gallery-tile', attrs: { type: 'button', 'aria-label': `${item.title} ${item.subtitle} – otwórz podgląd, obraz ${i + 1} z ${ITEMS.length}` } });
     const picture = html('img', { attrs: { src: `media/galeria/${item.file}`, alt: item.alt, loading: 'lazy', decoding: 'async' } });
     if (item.focus) picture.style.objectPosition = item.focus;
     const caption = html('span', { className: 'gallery-caption' }, [
-      html('span', {}, [html('strong', { text: item.title }), html('small', { text: item.subtitle })]),
+      html('span', {}, [html('strong', { text: item.title }), ' ', html('small', { text: item.subtitle })]),
       html('span', { className: 'icon-btn' }, [icon('i-arrow')])
     ]);
     tile.append(picture, caption);
