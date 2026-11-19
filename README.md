@@ -86,7 +86,7 @@ Struktura jest zbliżona do zalecanej w instrukcji. Różnice wynikają z podzia
 - `js/pulpit.js` – karta „Teraz”, kafelki, prognoza godzinowa i 7-dniowa; `js/mapa.js` – mapa Polski i lista miast; `js/szukaj.js` – wyszukiwarka.
 - `js/charts.js` – wykresy (W3); `js/symulacja.js` – Canvas (W4); `js/odtwarzacz.js` – wideo (W5); `js/galeria.js` – galeria (W6); `js/ikony.js` – pomocnicze tworzenie elementów i ikon.
 - `serwer.py` i `START.bat` – lokalne uruchomienie (serwer z obsługą przewijania wideo).
-- `svg/`, `fonts/`, `data/`, `media/` – zasoby; `docs/` – materiały do obrony i testów, audyt, raport Lighthouse oraz skrypty generujące film i dane demonstracyjne.
+- `svg/`, `fonts/`, `data/`, `media/` – zasoby; `docs/` – raport Lighthouse, opisy ujęć filmu oraz skrypty generujące film i dane demonstracyjne.
 
 ## Podział pracy
 
