@@ -2,7 +2,7 @@
 
 **Autor:** Karol Szymczak nr albumu 21504 
 **Adres wdrożenia:** [https://nazwa.netlify.app]  
-**Repozytorium Git:** [https://github.com/Karol-Szy/MeteoLive-PRO.git]  
+**Repozytorium Git:** [[https://github.com/Karol-Szy/MeteoLive-PRO.git](https://github.com/Karol-Szy/MeteoLive-PRO.git)]  
 **Przedmiot:** Interaktywna grafika i wizualizacja danych na stronach WWW, AHNS Radom  
 **Prowadzący:** Artur Podolski
 
