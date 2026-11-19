@@ -3,7 +3,7 @@
 | Pole | Do uzupełnienia |
 |---|---|
 | Grupa laboratoryjna | 1 |
-| |  Osiba 1| Karol Szymczak,  nr albumu 21504 |
+| Osoba 1 (imię, nazwisko, nr albumu) | Karol Szymczak, nr albumu 21504 |
 | Osoba 2 (imię, nazwisko, nr albumu) | praca samodzielna |
 | Temat projektu | MeteoLive PRO – pulpit pogodowy (temat 4: „Pogoda i klimat – dashboard”) |
 | Odbiorca i cel aplikacji | Osoby chcące szybko sprawdzić pogodę i zrozumieć zjawiska atmosferyczne (uczniowie, studenci); cel: czytelna prognoza i edukacja |
