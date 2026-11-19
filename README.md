@@ -22,7 +22,7 @@ MeteoLive PRO to interaktywny pulpit pogodowy (temat 4 z listy: „Pogoda i klim
 | W6 Galeria | Sekcja „Galeria” w układzie bento z powiększonym podglądem (obrazy wygenerowane przez AI) | `js/galeria.js`, `media/galeria/*.webp`, `css/animacje.css` | View Transitions API (płynne przejście miniatura → podgląd i między zdjęciami) z wariantem awaryjnym w CSS | Mysz, klawiatura (strzałki, Escape, Tab), gest przesunięcia palcem |
 | W7 Responsywność i dostępność | Cała aplikacja; na telefonie dolny pasek nawigacji | `css/style.css`, `index.html`, `js/szukaj.js` | Siatka CSS, media queries 360–1920 px, semantyczny HTML, ARIA (combobox, listbox, `aria-live`, `aria-current`), widoczny fokus, kontrast WCAG 2.2 AA | Zmień szerokość okna; obsłuż stronę samą klawiaturą |
 | W8 Jakość kodu | Moduły ES podzielone według funkcji, brak błędów w konsoli | całe repozytorium | JavaScript ES2020+, moduły ES | Historia commitów w repozytorium; wyniki Lighthouse poniżej |
-| W9 Wdrożenie | Statyczna aplikacja opublikowana na Netlify | `index.html` i foldery zasobów | Netlify | Adres na początku README, w Chrome lub Firefox |
+| W9 Wdrożenie | Statyczna aplikacja opublikowana na GitHub Pages | `index.html` i foldery zasobów | GitHub Pages | Adres na początku README, w Chrome lub Firefox |
 
 **Elementy dodatkowe:** dane na żywo z trzech usług Open-Meteo z obsługą błędów (automatyczny tryb demonstracyjny) i stanu ładowania, View Transitions API z wariantem awaryjnym, moduły ES, wyszukiwarka miejscowości obsługiwana klawiaturą, wykresy dostępne z klawiatury i w formie tabeli, zapamiętywanie ostatnio wybranego miasta.
 
@@ -110,7 +110,7 @@ Pomiar z 14.11.2026, tryb Desktop, wersja lokalna (`http://localhost:5500`), Lig
 
 ## Wdrożenie
 
-Aplikacja jest statyczna, więc nie wymaga budowania. Opublikowana jest na GitHub Pages (adres na początku README).
+Aplikacja jest statyczna, więc nie wymaga budowania. Strona jest publikowana przez GitHub Pages z gałęzi `main` – każdy push automatycznie aktualizuje wersję online.
 
 
 ## Znane ograniczenia i dalszy rozwój
