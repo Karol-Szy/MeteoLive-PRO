@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#050a14">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="MeteoLive PRO — interaktywny pulpit pogodowy: aktualne warunki, prognoza godzinowa i 7-dniowa, wykresy SVG, mapa Polski, animacje Canvas, galeria i film.">
+  <title>MeteoLive PRO — pulpit pogodowy</title>
+  <link rel="icon" href="svg/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="fonts/inter-400.woff" as="font" type="font/woff" crossorigin>
+  <link rel="preload" href="fonts/inter-display-300.woff" as="font" type="font/woff" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animacje.css">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Przejdź do treści</a>
+  <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <defs>
+      <radialGradient id="gSun" cx=".38" cy=".34" r=".72"><stop offset="0" stop-color="#fff6c4"/><stop offset=".42" stop-color="#ffcc3d"/><stop offset="1" stop-color="#ff8a1c"/></radialGradient>
+      <radialGradient id="gSunGlow"><stop offset=".35" stop-color="#ffb627" stop-opacity=".5"/><stop offset="1" stop-color="#ffb627" stop-opacity="0"/></radialGradient>
+      <radialGradient id="gMoonGlow"><stop offset=".3" stop-color="#b9b4ff" stop-opacity=".42"/><stop offset="1" stop-color="#b9b4ff" stop-opacity="0"/></radialGradient>
+      <linearGradient id="gMoon" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbfaff"/><stop offset="1" stop-color="#a39cff"/></linearGradient>
+      <linearGradient id="gCloud" x1="0" y1="14" x2="0" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#e2eaf7"/><stop offset="1" stop-color="#a6b8d8"/></linearGradient>
+      <linearGradient id="gCloudDark" x1="0" y1="14" x2="0" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#cfd8ea"/><stop offset=".6" stop-color="#8f9dbb"/><stop offset="1" stop-color="#58668a"/></linearGradient>
+      <linearGradient id="gDrop" x1="0" y1="-5" x2="0" y2="5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#a8e2ff"/><stop offset="1" stop-color="#2f7cff"/></linearGradient>
+      <linearGradient id="gBolt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff59d"/><stop offset="1" stop-color="#ffa41b"/></linearGradient>
+      <mask id="mMoon"><rect width="64" height="64" fill="#fff"/><circle cx="40" cy="22" r="13" fill="#000"/></mask>
+      <g id="sCloud"><circle cx="22" cy="36" r="10"/><circle cx="34" cy="28" r="14"/><circle cx="46" cy="36" r="10"/><rect x="22" y="34" width="24" height="12"/></g>
+      <path id="sDrop" d="M0-5C-2.2-1.6-3.4.4-3.4 1.9a3.4 3.4 0 0 0 6.8 0C3.4.4 2.2-1.6 0-5Z"/>
+    </defs>
+
+    <symbol id="wi-sun" viewBox="0 0 64 64"><circle class="a-glow" cx="32" cy="32" r="28" fill="url(#gSunGlow)"/><circle class="a-sun" cx="32" cy="32" r="15" fill="url(#gSun)"/></symbol>
+    <symbol id="wi-moon" viewBox="0 0 64 64"><circle cx="31" cy="32" r="27" fill="url(#gMoonGlow)"/><circle cx="31" cy="32" r="16" fill="url(#gMoon)" mask="url(#mMoon)"/><path class="a-twinkle" d="M49 39l1 2.4 2.4 1-2.4 1-1 2.4-1-2.4-2.4-1 2.4-1z" fill="#fff"/><circle class="a-twinkle d2" cx="46" cy="13" r="1.4" fill="#fff"/></symbol>
+    <symbol id="wi-sun-cloud" viewBox="0 0 64 64"><g transform="translate(-7 -7)"><circle class="a-glow" cx="32" cy="32" r="24" fill="url(#gSunGlow)"/><circle class="a-sun" cx="32" cy="32" r="13" fill="url(#gSun)"/></g><g class="a-cloud"><use href="#sCloud" fill="url(#gCloud)" transform="translate(4 8)"/></g></symbol>
+    <symbol id="wi-moon-cloud" viewBox="0 0 64 64"><g transform="translate(-4 -6) scale(.85)"><circle cx="31" cy="32" r="24" fill="url(#gMoonGlow)"/><circle cx="31" cy="32" r="16" fill="url(#gMoon)" mask="url(#mMoon)"/></g><g class="a-cloud"><use href="#sCloud" fill="url(#gCloud)" transform="translate(4 8)"/></g></symbol>
+    <symbol id="wi-cloud" viewBox="0 0 64 64"><use href="#sCloud" fill="url(#gCloudDark)" transform="translate(22 4) scale(.6)" opacity=".9"/><g class="a-cloud"><use href="#sCloud" fill="url(#gCloud)" transform="translate(-3 4)"/></g></symbol>
+    <symbol id="wi-fog" viewBox="0 0 64 64"><use href="#sCloud" fill="url(#gCloud)" transform="translate(-2 -4)"/><g class="a-fog" stroke="#d6e2f3" stroke-width="3.4" stroke-linecap="round"><path d="M14 48h28"/><path d="M22 55h30" opacity=".75"/><path d="M12 61h22" opacity=".5"/></g></symbol>
+    <symbol id="wi-drizzle" viewBox="0 0 64 64"><g class="a-cloud"><use href="#sCloud" fill="url(#gCloud)" transform="translate(-2 -6)"/></g><g fill="url(#gDrop)"><g class="a-drop"><use href="#sDrop" transform="translate(23 50) scale(.72)"/></g><g class="a-drop d2"><use href="#sDrop" transform="translate(33 55) scale(.72)"/></g><g class="a-drop d3"><use href="#sDrop" transform="translate(43 50) scale(.72)"/></g></g></symbol>
+    <symbol id="wi-rain" viewBox="0 0 64 64"><g class="a-cloud"><use href="#sCloud" fill="url(#gCloud)" transform="translate(-2 -8)"/></g><g fill="url(#gDrop)"><g class="a-drop"><use href="#sDrop" transform="translate(22 49)"/></g><g class="a-drop d2"><use href="#sDrop" transform="translate(33 55)"/></g><g class="a-drop d3"><use href="#sDrop" transform="translate(44 49)"/></g></g></symbol>
+    <symbol id="wi-sun-rain" viewBox="0 0 64 64"><g transform="translate(-9 -11)"><circle class="a-glow" cx="32" cy="32" r="22" fill="url(#gSunGlow)"/><circle class="a-sun" cx="32" cy="32" r="12" fill="url(#gSun)"/></g><g class="a-cloud"><use href="#sCloud" fill="url(#gCloud)" transform="translate(2 -2)"/></g><g fill="url(#gDrop)"><g class="a-drop"><use href="#sDrop" transform="translate(28 53)"/></g><g class="a-drop d2"><use href="#sDrop" transform="translate(40 57)"/></g></g></symbol>
+    <symbol id="wi-storm" viewBox="0 0 64 64"><g class="a-cloud"><use href="#sCloud" fill="url(#gCloudDark)" transform="translate(-2 -8)"/></g><path class="a-bolt" d="M34 36 25 50h7l-4 12 13-17h-7l4-9Z" fill="url(#gBolt)"/><g fill="url(#gDrop)"><g class="a-drop d2"><use href="#sDrop" transform="translate(17 49)"/></g><g class="a-drop"><use href="#sDrop" transform="translate(48 51)"/></g></g></symbol>
+    <symbol id="wi-snow" viewBox="0 0 64 64"><g class="a-cloud"><use href="#sCloud" fill="url(#gCloud)" transform="translate(-2 -8)"/></g><g fill="#fff" stroke="#9cc8ff" stroke-width=".8"><circle class="a-flake" cx="22" cy="50" r="3"/><circle class="a-flake d2" cx="33" cy="56" r="3"/><circle class="a-flake d3" cx="44" cy="50" r="3"/></g></symbol>
+
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20h16M7 16.5v-4M12 16.5v-10M17 16.5v-7"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4.5 3.5 6.5v13L9 17.5l6 2 5.5-2v-13L15 6.5l-6-2ZM9 4.5v13M15 6.5v13"/></symbol>
+    <symbol id="i-studio" viewBox="0 0 24 24"><path d="m11 3.5 1.9 5.1L18 10.5l-5.1 1.9L11 17.5l-1.9-5.1L4 10.5l5.1-1.9L11 3.5ZM18 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4.5 17.5 4.6-4.3 3.2 3 3.3-3.4 4 4.2"/></symbol>
+    <symbol id="i-film" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="3"/><path d="m10.5 9.4 4.2 2.6-4.2 2.6V9.4Z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M19.5 11A7.6 7.6 0 0 0 6 7.2L4.5 8.7M4.5 4.5v4.2h4.2M4.5 13A7.6 7.6 0 0 0 18 16.8l1.5-1.5M19.5 19.5v-4.2h-4.2"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M9 6.5v11M15 6.5v11"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.8v12.4a.8.8 0 0 0 1.2.7l9.6-6.2a.8.8 0 0 0 0-1.4L9.2 5.1a.8.8 0 0 0-1.2.7Z" fill="currentColor"/></symbol>
+    <symbol id="i-wind" viewBox="0 0 24 24"><path d="M3 8.5h10.5a3 3 0 1 0-3-3M3 12.5h15a3 3 0 1 1-3 3M3 16.5h6.5"/></symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3.5s6 6.4 6 10.6a6 6 0 0 1-12 0c0-4.2 6-10.6 6-10.6Z"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M4.6 17.5a8.5 8.5 0 1 1 14.8 0"/><path d="m12 13.5 3.6-4"/><circle cx="12" cy="13.8" r="1.3"/></symbol>
+    <symbol id="i-thermo" viewBox="0 0 24 24"><path d="M10 14.5V5.2a2 2 0 0 1 4 0v9.3a4 4 0 1 1-4 0Z"/><path d="M12 10v6.5"/></symbol>
+    <symbol id="i-sunrise" viewBox="0 0 24 24"><path d="M3 18.5h18M6.5 18.5a5.5 5.5 0 0 1 11 0M12 3.5v4.5M9.5 6 12 3.5 14.5 6M4.3 11l1.6 1.2M19.7 11l-1.6 1.2"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19c0-8 5.5-13.5 14-14 .5 8.5-5 14-12 14M5 19l7-7"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-umbrella" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 18 0H3ZM12 12v6.5a2 2 0 0 1-4 0M12 3v-.5"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18.5h10a4 4 0 0 0 .6-8 6 6 0 0 0-11.4 1.5A3.4 3.4 0 0 0 7 18.5Z"/></symbol>
+    <symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4v-5ZM15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4v-5ZM16 9.5l5 5M21 9.5l-5 5"/></symbol>
+    <symbol id="i-cc" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="M10.5 10.2a2.3 2.3 0 1 0 0 3.6M17 10.2a2.3 2.3 0 1 0 0 3.6"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m14.5 6-6 6 6 6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m9.5 6 6 6-6 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
+  </svg>
+
+  <div class="app">
+    <aside class="sidebar">
+      <a href="#pulpit" class="logo" aria-label="MeteoLive PRO — na początek strony">
+        <img src="svg/favicon.svg" width="42" height="42" alt="">
+        <span class="logo-text">Meteo<b>Live</b></span>
+      </a>
+      <nav class="side-nav" aria-label="Sekcje strony">
+        <a class="side-link" href="#pulpit"><svg class="i" aria-hidden="true"><use href="#i-grid"/></svg><span>Pulpit</span></a>
+        <a class="side-link" href="#mapa"><svg class="i" aria-hidden="true"><use href="#i-map"/></svg><span>Mapa</span></a>
+        <a class="side-link" href="#wykresy"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg><span>Wykresy</span></a>
+        <a class="side-link" href="#studio"><svg class="i" aria-hidden="true"><use href="#i-studio"/></svg><span>Studio</span></a>
+        <a class="side-link" href="#galeria"><svg class="i" aria-hidden="true"><use href="#i-image"/></svg><span>Galeria</span></a>
+        <a class="side-link" href="#film"><svg class="i" aria-hidden="true"><use href="#i-film"/></svg><span>Film</span></a>
+      </nav>
+      <p class="side-version">PRO<br>2.0</p>
+    </aside>
+
+    <div class="content">
+      <header class="topbar">
+        <div class="place">
+          <h1 class="visually-hidden">MeteoLive PRO — interaktywny pulpit pogodowy</h1>
+          <p class="place-name"><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg><span id="placeName">Warszawa</span></p>
+          <p class="place-meta" id="placeMeta">mazowieckie, Polska</p>
+        </div>
+
+        <div class="search" id="search">
+          <svg class="i search-icon" aria-hidden="true"><use href="#i-search"/></svg>
+          <label for="searchInput" class="visually-hidden">Szukaj miejscowości</label>
+          <input id="searchInput" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="searchList" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="Szukaj miasta, np. Poznań">
+          <kbd aria-hidden="true">/</kbd>
+          <ul id="searchList" class="search-list" role="listbox" aria-label="Wyniki wyszukiwania" hidden></ul>
+        </div>
+
+        <div class="top-actions">
+          <p class="live-pill" id="livePill" data-source="loading" title="Źródło danych">
+            <span class="live-dot" aria-hidden="true"></span><span id="liveLabel">ŁADOWANIE</span><time id="localClock">--:--</time>
+          </p>
+          <button class="icon-btn" id="refreshButton" type="button" aria-label="Odśwież dane pogodowe" title="Odśwież dane"><svg class="i" aria-hidden="true"><use href="#i-refresh"/></svg></button>
+          <button class="icon-btn" id="motionToggle" type="button" aria-pressed="false" aria-label="Wstrzymaj animacje" title="Wstrzymaj animacje"><svg class="i" aria-hidden="true"><use id="motionIcon" href="#i-pause"/></svg></button>
+        </div>
+      </header>
+
+      <p class="data-status" id="dataStatus" role="status" aria-live="polite">Trwa ładowanie danych pogodowych…</p>
+
+      <main id="main" tabindex="-1">
+        <section id="pulpit" class="section" aria-labelledby="pulpitTitle">
+          <h2 id="pulpitTitle" class="visually-hidden">Pulpit pogodowy</h2>
+
+          <div class="row row-now">
+            <article class="card now-card" aria-labelledby="nowLabel" aria-busy="true" style="--i:0">
+              <canvas id="ambientCanvas" class="now-canvas" aria-hidden="true"></canvas>
+              <div class="now-inner">
+                <div class="now-head">
+                  <h3 id="nowLabel" class="now-label">Teraz</h3>
+                  <p class="now-date" id="nowDate">—</p>
+                </div>
+                <div class="now-main">
+                  <div class="now-icon" id="nowIcon"></div>
+                  <p class="now-temp"><span id="nowTemp">—</span><span class="unit">°C</span></p>
+                </div>
+                <p class="now-desc" id="nowDesc">Wczytywanie…</p>
+                <p class="now-range" id="nowRange"></p>
+                <p class="now-summary" id="nowSummary"></p>
+                <ul class="now-chips" id="nowChips"></ul>
+              </div>
+            </article>
+
+            <section class="card highlights" aria-labelledby="hlTitle" style="--i:1">
+              <div class="card-head">
+                <h3 id="hlTitle">Najważniejsze dziś</h3>
+                <span class="card-hint" id="hlHint">Warunki w tej chwili</span>
+              </div>
+              <div class="hl-grid">
+                <article class="tile tile-wind">
+                  <h4 class="tile-label"><svg class="i" aria-hidden="true"><use href="#i-wind"/></svg>Wiatr</h4>
+                  <div class="wind-body">
+                    <p class="tile-value"><span id="windValue">—</span><small>km/h</small></p>
+                    <svg class="compass" viewBox="0 0 100 100" aria-hidden="true">
+                      <circle cx="50" cy="50" r="46" class="compass-ring"/>
+                      <g id="compassTicks" class="compass-ticks"></g>
+                      <text x="50" y="21">N</text><text x="81" y="54">E</text><text x="50" y="87">S</text><text x="19" y="54">W</text>
+                      <g id="compassNeedle" class="compass-needle"><path d="M50 26 56 50H44Z" class="needle-head"/><path d="M50 74 44 50h12Z" class="needle-tail"/></g>
+                      <circle cx="50" cy="50" r="4.5" class="compass-hub"/>
+                    </svg>
+                  </div>
+                  <p class="tile-foot" id="windFoot">—</p>
+                </article>
+
+                <article class="tile tile-uv">
+                  <h4 class="tile-label"><svg class="i" aria-hidden="true"><use href="#i-sun"/></svg>Indeks UV</h4>
+                  <div class="gauge-box">
+                    <svg class="gauge" viewBox="0 0 120 66" aria-hidden="true">
+                      <defs><linearGradient id="gUv" x1="12" x2="108" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#3ddc97"/><stop offset=".3" stop-color="#ffd23f"/><stop offset=".55" stop-color="#ff9a3c"/><stop offset=".8" stop-color="#ff5d73"/><stop offset="1" stop-color="#b77dff"/></linearGradient></defs>
+                      <path d="M12 60a48 48 0 0 1 96 0" class="gauge-track"/>
+                      <path d="M12 60a48 48 0 0 1 96 0" class="gauge-value" id="uvArc" pathLength="100" stroke="url(#gUv)"/>
+                      <circle id="uvDot" class="gauge-dot" cx="12" cy="60" r="5"/>
+                    </svg>
+                    <p class="gauge-number" id="uvValue">—</p>
+                  </div>
+                  <p class="tile-foot" id="uvFoot">—</p>
+                </article>
+
+                <article class="tile tile-sun">
+                  <h4 class="tile-label"><svg class="i" aria-hidden="true"><use href="#i-sunrise"/></svg>Wschód i zachód</h4>
+                  <svg class="sun-arc" viewBox="0 0 160 70" aria-hidden="true">
+                    <defs><linearGradient id="gSunArc" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#ffb547" stop-opacity=".25"/><stop offset="1" stop-color="#ffd166"/></linearGradient></defs>
+                    <path d="M10 62Q80-34 150 62" class="arc-track"/>
+                    <path d="M10 62Q80-34 150 62" class="arc-progress" id="sunArc" pathLength="100"/>
+                    <line x1="2" y1="62" x2="158" y2="62" class="arc-horizon"/>
+                    <circle id="sunDot" class="sun-dot" cx="10" cy="62" r="6"/>
+                  </svg>
+                  <div class="sun-times">
+                    <p><small>Wschód</small><strong id="sunrise">—</strong></p>
+                    <p><small>Zachód</small><strong id="sunset">—</strong></p>
+                  </div>
+                  <p class="tile-foot" id="dayLength">—</p>
+                </article>
+
+                <article class="tile tile-aqi">
+                  <h4 class="tile-label"><svg class="i" aria-hidden="true"><use href="#i-leaf"/></svg>Jakość powietrza</h4>
+                  <p class="tile-value"><span id="aqiValue">—</span><small>EAQI</small></p>
+                  <p class="aqi-label" id="aqiLabel" data-tone="none">—</p>
+                  <div class="scale" aria-hidden="true"><span class="scale-marker" id="aqiMarker"></span></div>
+                  <p class="tile-foot" id="aqiFoot">—</p>
+                </article>
+
+                <article class="tile">
+                  <h4 class="tile-label"><svg class="i" aria-hidden="true"><use href="#i-drop"/></svg>Wilgotność</h4>
+                  <div class="value-row">
+                    <p class="tile-value"><span id="humValue">—</span><small>%</small></p>
+                    <div class="meter" aria-hidden="true"><span id="humBar"></span></div>
+                  </div>
+                  <p class="tile-foot" id="humFoot">—</p>
+                </article>
+
+                <article class="tile">
+                  <h4 class="tile-label"><svg class="i" aria-hidden="true"><use href="#i-thermo"/></svg>Odczuwalna</h4>
+                  <p class="tile-value"><span id="feelsValue">—</span></p>
+                  <p class="tile-foot" id="feelsFoot">—</p>
+                </article>
+
+                <article class="tile">
+                  <h4 class="tile-label"><svg class="i" aria-hidden="true"><use href="#i-gauge"/></svg>Ciśnienie</h4>
+                  <div class="value-row">
+                    <p class="tile-value"><span id="pressValue">—</span><small>hPa</small></p>
+                    <svg class="mini-gauge" viewBox="0 0 60 36" aria-hidden="true">
+                      <path d="M6 32a24 24 0 0 1 48 0" class="gauge-track"/>
+                      <line id="pressNeedle" class="mini-needle" x1="30" y1="32" x2="30" y2="13"/>
+                      <circle cx="30" cy="32" r="3" class="compass-hub"/>
+                    </svg>
+                  </div>
+                  <p class="tile-foot" id="pressFoot">—</p>
+                </article>
+
+                <article class="tile">
+                  <h4 class="tile-label"><svg class="i" aria-hidden="true"><use href="#i-eye"/></svg>Widoczność</h4>
+                  <p class="tile-value"><span id="visValue">—</span><small>km</small></p>
+                  <p class="tile-foot" id="visFoot">—</p>
+                </article>
+              </div>
+            </section>
+          </div>
+
+          <section class="card hourly" aria-labelledby="hourlyTitle" style="--i:2">
+            <div class="card-head">
+              <h3 id="hourlyTitle"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Prognoza godzinowa</h3>
+              <div class="scroll-btns">
+                <button type="button" class="icon-btn small" data-scroll="-1" aria-label="Wcześniejsze godziny"><svg class="i" aria-hidden="true"><use href="#i-left"/></svg></button>
+                <button type="button" class="icon-btn small" data-scroll="1" aria-label="Późniejsze godziny"><svg class="i" aria-hidden="true"><use href="#i-right"/></svg></button>
+              </div>
+            </div>
+            <ol class="hourly-list" id="hourlyList" tabindex="0" aria-label="Najbliższe 24 godziny"></ol>
+          </section>
+
+          <div class="row row-week">
+            <section class="card week" aria-labelledby="weekTitle" style="--i:3">
+              <div class="card-head">
+                <h3 id="weekTitle"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg>Prognoza 7 dni</h3>
+                <span class="card-hint" id="weekHint"></span>
+              </div>
+              <ol class="week-list" id="weekList"></ol>
+            </section>
+
+            <section class="card map-card" id="mapa" aria-labelledby="mapTitle" style="--i:4">
+              <div class="card-head">
+                <h3 id="mapTitle"><svg class="i" aria-hidden="true"><use href="#i-map"/></svg>Mapa warunków</h3>
+                <span class="card-hint" id="mapHint">Wybierz miasto na mapie lub z listy</span>
+              </div>
+              <div class="map-layout">
+                <div class="map-wrap" id="mapWrap"></div>
+                <div class="cities">
+                  <h4 class="cities-title">Inne miasta</h4>
+                  <ul class="city-list" id="cityList"></ul>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section id="wykresy" class="section" aria-labelledby="chartsTitle">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Dane, które opowiadają historię</p>
+              <h2 id="chartsTitle">Wykresy prognozy</h2>
+            </div>
+            <div class="segmented" role="group" aria-label="Zakres danych na wykresach">
+              <button class="seg-btn is-active" type="button" data-hours="24" aria-pressed="true">24 h</button>
+              <button class="seg-btn" type="button" data-hours="48" aria-pressed="false">48 h</button>
+              <button class="seg-btn" type="button" data-hours="72" aria-pressed="false">72 h</button>
+            </div>
+          </div>
+          <div class="row row-charts">
+            <article class="card chart-card" aria-labelledby="tempChartTitle">
+              <div class="chart-head">
+                <div><p class="kicker">Wykres 01 · SVG</p><h3 id="tempChartTitle">Temperatura</h3></div>
+                <p class="chart-stat" id="tempStat">—</p>
+              </div>
+              <div class="chart-wrap" id="temperatureChart"></div>
+              <p class="chart-note">Najedź na wykres albo zaznacz go klawiszem Tab i użyj strzałek.</p>
+            </article>
+            <article class="card chart-card" aria-labelledby="rainChartTitle">
+              <div class="chart-head">
+                <div><p class="kicker">Wykres 02 · SVG</p><h3 id="rainChartTitle">Szansa opadów</h3></div>
+                <p class="chart-stat" id="rainStat">—</p>
+              </div>
+              <div class="chart-wrap" id="precipitationChart"></div>
+              <p class="chart-note">Każdy słupek to prawdopodobieństwo opadu w danej godzinie.</p>
+            </article>
+          </div>
+          <details class="card table-card">
+            <summary>Pokaż dane z wykresów w tabeli</summary>
+            <div class="table-wrap">
+              <table id="chartTable">
+                <caption class="visually-hidden">Temperatura i szansa opadów dla wybranego zakresu</caption>
+                <thead><tr><th scope="col">Czas</th><th scope="col">Temperatura</th><th scope="col">Szansa opadów</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </details>
+          <p class="source-line">Dane: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a> (prognoza, jakość powietrza, wyszukiwarka miejscowości; licencja CC BY 4.0). Przy braku połączenia pokazujemy jawnie oznaczone dane demonstracyjne.</p>
+        </section>
+
+        <section id="studio" class="section" aria-labelledby="studioTitle">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Pogoda od kuchni</p>
+              <h2 id="studioTitle">Studio pogody i obieg wody</h2>
+            </div>
+          </div>
+          <div class="row row-studio">
+            <article class="card studio-card" id="symulator" aria-labelledby="sceneTitle">
+              <canvas id="weatherCanvas" role="img" aria-label="Animacja wybranego zjawiska atmosferycznego: słońce, deszcz, burza lub śnieg"></canvas>
+              <div class="studio-top">
+                <span class="tag">Canvas 2D</span>
+                <span class="studio-count" id="sceneCount">01 / 04</span>
+              </div>
+              <div class="studio-bottom">
+                <div class="studio-caption">
+                  <h3 id="sceneTitle">Słoneczny dzień</h3>
+                  <p id="sceneDetail">Promienie słońca i pojedyncze chmury</p>
+                  <p class="studio-hint">Ruch kursora lub palca nad sceną zmienia wiatr; w scenie „Burza” kliknięcie wywołuje błyskawicę.</p>
+                </div>
+                <div class="scene-switch" role="group" aria-label="Wybierz zjawisko do animacji">
+                  <button type="button" class="scene-btn is-active" data-scene="sun" aria-pressed="true"><svg class="wi" aria-hidden="true"><use href="#wi-sun"/></svg><span>Słońce</span></button>
+                  <button type="button" class="scene-btn" data-scene="rain" aria-pressed="false"><svg class="wi" aria-hidden="true"><use href="#wi-rain"/></svg><span>Deszcz</span></button>
+                  <button type="button" class="scene-btn" data-scene="storm" aria-pressed="false"><svg class="wi" aria-hidden="true"><use href="#wi-storm"/></svg><span>Burza</span></button>
+                  <button type="button" class="scene-btn" data-scene="snow" aria-pressed="false"><svg class="wi" aria-hidden="true"><use href="#wi-snow"/></svg><span>Śnieg</span></button>
+                </div>
+                <div class="speed">
+                  <label for="speedRange">Prędkość</label>
+                  <input type="range" id="speedRange" min="1" max="5" value="3">
+                  <output for="speedRange" id="speedValue">3 / 5</output>
+                </div>
+              </div>
+            </article>
+
+            <article class="card cycle-card" aria-labelledby="cycleTitle">
+              <div class="card-head">
+                <h3 id="cycleTitle">Jak powstaje deszcz?</h3>
+                <span class="tag">Animowane SVG</span>
+              </div>
+              <div class="cycle-art">
+                <object id="waterCycle" type="image/svg+xml" data="svg/cykl-wody.svg" role="img" aria-label="Animowany schemat obiegu wody w przyrodzie: parowanie, skraplanie, opad i powrót wody"><img src="svg/cykl-wody.svg" alt="Schemat obiegu wody w przyrodzie"></object>
+              </div>
+              <ol class="cycle-steps">
+                <li><span>01</span><div><h4>Parowanie</h4><p>Słońce ogrzewa wodę, a para unosi się w górę.</p></div></li>
+                <li><span>02</span><div><h4>Skraplanie</h4><p>Para ochładza się i tworzy krople w chmurach.</p></div></li>
+                <li><span>03</span><div><h4>Opad</h4><p>Cięższe krople spadają jako deszcz lub śnieg.</p></div></li>
+                <li><span>04</span><div><h4>Powrót</h4><p>Woda spływa do rzek i mórz — cykl trwa dalej.</p></div></li>
+              </ol>
+            </article>
+          </div>
+        </section>
+
+        <section id="galeria" class="section" aria-labelledby="galleryTitle">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Atmosfera w obrazach</p>
+              <h2 id="galleryTitle">Galeria zjawisk</h2>
+            </div>
+            <span class="tag">5 obrazów wygenerowanych przez AI</span>
+          </div>
+          <div id="galleryGrid" class="gallery-grid"></div>
+        </section>
+
+        <section id="film" class="section" aria-labelledby="filmTitle">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Krótka lekcja meteorologii</p>
+              <h2 id="filmTitle">Cztery pory roku</h2>
+            </div>
+            <span class="tag">Wideo + napisy WebVTT</span>
+          </div>
+          <div class="card video-card">
+            <div class="video-frame">
+              <video id="weatherVideo" preload="metadata" playsinline poster="media/plakat-filmu.webp" aria-label="Film edukacyjny: wiosna, lato, jesień i zima w jednej dolinie">
+                <source src="media/cztery-pory-roku.mp4" type="video/mp4">
+                <track kind="captions" src="media/napisy-pl.vtt" srclang="pl" label="Polski" default>
+                Twoja przeglądarka nie obsługuje wideo HTML5.
+              </video>
+              <p class="video-caption" id="videoCaption" hidden></p>
+              <button class="video-big-play" id="bigPlay" type="button" aria-label="Odtwórz film"><svg class="i" aria-hidden="true"><use href="#i-play"/></svg></button>
+              <div class="video-controls" role="group" aria-label="Sterowanie filmem">
+                <button type="button" id="videoPlay" aria-label="Odtwórz"><svg class="i" aria-hidden="true"><use href="#i-play"/></svg></button>
+                <input id="videoProgress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Pozycja odtwarzania">
+                <span id="videoTime" class="video-time">00:00 / 00:00</span>
+                <button type="button" id="videoMute" aria-label="Wycisz"><svg class="i" aria-hidden="true"><use href="#i-volume"/></svg></button>
+                <button type="button" id="captionsToggle" aria-pressed="true" aria-label="Napisy"><svg class="i" aria-hidden="true"><use href="#i-cc"/></svg></button>
+                <button type="button" id="fullscreenButton" aria-label="Pełny ekran"><svg class="i" aria-hidden="true"><use href="#i-expand"/></svg></button>
+              </div>
+            </div>
+            <aside class="video-aside" aria-labelledby="videoAsideTitle">
+              <span class="tag">O filmie</span>
+              <h3 id="videoAsideTitle">Jedna dolina, cały rok.</h3>
+              <p>Cały rok w 18 sekund w jednej górskiej dolinie. Ujęcia wygenerowała sztuczna inteligencja (PixVerse), a skrypt projektu zmontował je w jeden film. Wiosną po deszczu pojawia się tęcza, latem nad jeziorem śmigają jaskółki, jesienią nad poranną mgłą odlatuje klucz gęsi, a zimą śnieg pada na zamarznięte jezioro. Dźwięk i napisy przygotowano specjalnie do filmu i zgrano z obrazem.</p>
+              <ol class="chapters" aria-label="Rozdziały filmu">
+                <li><button type="button" data-time="0"><svg class="wi" aria-hidden="true"><use href="#wi-sun-rain"/></svg><span>Wiosna</span><time>0:00</time></button></li>
+                <li><button type="button" data-time="4.5"><svg class="wi" aria-hidden="true"><use href="#wi-sun"/></svg><span>Lato</span><time>0:04</time></button></li>
+                <li><button type="button" data-time="9"><svg class="wi" aria-hidden="true"><use href="#wi-fog"/></svg><span>Jesień</span><time>0:09</time></button></li>
+                <li><button type="button" data-time="13.5"><svg class="wi" aria-hidden="true"><use href="#wi-snow"/></svg><span>Zima</span><time>0:13</time></button></li>
+              </ol>
+            </aside>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p><strong>MeteoLive PRO</strong> · projekt edukacyjny, 2026</p>
+        <p>Prognoza nie zastępuje komunikatów ostrzegawczych IMGW. Źródło danych: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>.</p>
+        <a href="#pulpit" class="to-top"><svg class="i" aria-hidden="true"><use href="#i-up"/></svg>Na górę</a>
+      </footer>
+    </div>
+  </div>
+
+  <div class="gallery-modal" id="galleryModal" hidden>
+    <div class="modal-backdrop" data-close="true"></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1">
+      <div class="modal-top">
+        <div><p class="eyebrow">Galeria zjawisk</p><h2 id="modalTitle">Zjawisko</h2></div>
+        <button class="icon-btn" id="modalClose" type="button" aria-label="Zamknij podgląd"><svg class="i" aria-hidden="true"><use href="#i-close"/></svg></button>
+      </div>
+      <img id="modalImage" src="media/galeria/zorza-nad-fiordem.webp" alt="">
+      <div class="modal-bottom">
+        <button class="icon-btn" id="modalPrev" type="button" aria-label="Poprzedni obraz"><svg class="i" aria-hidden="true"><use href="#i-left"/></svg></button>
+        <div class="modal-text"><p id="modalDescription"></p><small class="modal-credit" id="modalCredit" hidden></small></div>
+        <span id="modalCount"></span>
+        <button class="icon-btn" id="modalNext" type="button" aria-label="Następny obraz"><svg class="i" aria-hidden="true"><use href="#i-right"/></svg></button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

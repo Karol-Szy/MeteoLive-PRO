@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" role="img" aria-labelledby="title description">
+<title id="title">Obieg wody w przyrodzie</title><desc id="description">Animacja parowania, skraplania i opadów.</desc>
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#1b3769"/><stop offset="1" stop-color="#2f6aa3"/></linearGradient>
+  <linearGradient id="lake" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#58bdff"/><stop offset="1" stop-color="#1650a6"/></linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="10"/></filter>
+</defs>
+<style>
+  .moving{animation:rise 3.5s ease-in-out infinite alternate;transform-origin:center}
+  .drop{animation:fall 2.7s linear infinite}
+  .drop.d2{animation-delay:-1s}.drop.d3{animation-delay:-2s}
+  .rays{animation:spin 4s linear infinite;transform-origin:145px 117px}
+  @keyframes rise{from{transform:translateY(8px);opacity:.35}to{transform:translateY(-23px);opacity:1}}
+  @keyframes fall{from{transform:translateY(-8px);opacity:.2}to{transform:translateY(44px);opacity:1}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .motion-off *, .motion-off *:before,.motion-off *:after{animation-play-state:paused!important}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important}}
+  text{font-family:system-ui,sans-serif;fill:#f2f7ff;font-size:18px;font-weight:700;paint-order:stroke;stroke:#13284d;stroke-width:2px}
+</style>
+<rect x="0" y="0" width="680" height="440" rx="22" fill="url(#sky)"/>
+<circle cx="145" cy="117" r="56" fill="#ffce7f" opacity=".23" filter="url(#glow)"/>
+<g class="rays" stroke="#ffe1a6" stroke-width="5" stroke-linecap="round"><path d="M145 35v17M145 182v17M63 117h17M210 117h17M87 59l13 13M190 162l13 13M203 59l-13 13M100 162l-13 13"/></g>
+<circle cx="145" cy="117" r="46" fill="#ffcb70"/>
+<path d="M0 317Q130 270 224 316T448 312Q549 270 680 300V440H0Z" fill="#183f6e"/>
+<path d="M0 365Q95 347 170 365T332 363Q430 345 512 363T680 363V440H0Z" fill="url(#lake)"/>
+<path d="M0 392Q100 376 180 391T350 390Q510 376 680 389" stroke="#a9dbff" opacity=".6" stroke-width="3" fill="none"/>
+<path d="M320 319Q420 310 500 335T680 319" stroke="#93cfff" stroke-width="5" fill="none" opacity=".6"/>
+<g class="moving" fill="none" stroke="#b8e2ff" stroke-width="6" stroke-linecap="round" opacity=".75"><path d="M225 337C205 286 239 255 250 215"/><path d="M270 340C252 292 285 255 292 214"/></g>
+<path d="M220 232C280 185 340 165 402 182" stroke="#b8e2ff" stroke-width="5" fill="none" stroke-dasharray="9 10" opacity=".7"/>
+<path d="M395 171l24 11-25 8" fill="none" stroke="#b8e2ff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<g fill="#e0f5fb"><ellipse cx="450" cy="148" rx="90" ry="31"/><circle cx="405" cy="126" r="42"/><circle cx="459" cy="105" r="53"/><circle cx="508" cy="132" r="43"/></g>
+<g fill="#bfe6f6" opacity=".97"><path class="drop" d="M418 200q-10 19 0 23q10-4 0-23Z"/><path class="drop d2" d="M457 196q-11 20 0 24q11-4 0-24Z"/><path class="drop d3" d="M498 204q-10 19 0 23q10-4 0-23Z"/></g>
+<path d="M514 236Q560 282 530 337" stroke="#b8e2ff" stroke-width="4" stroke-dasharray="8 9" fill="none"/>
+<path d="M521 323l9 17 12-16" fill="none" stroke="#b8e2ff" stroke-width="4" stroke-linecap="round"/>
+<text x="57" y="230">Słońce</text><text x="185" y="192">Parowanie</text><text x="421" y="70">Skraplanie</text><text x="531" y="225">Opad</text><text x="45" y="414">Zbiornik wodny</text>
+</svg>
