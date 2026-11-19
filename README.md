@@ -94,8 +94,9 @@ Projekt jest indywidualny – wszystkie etapy prowadziłem sam, z pomocą narzę
 
 ## Wykorzystanie narzędzi AI
 
-Przy projekcie korzystałem z dwuch narzędzi AI:
+Przy projekcie korzystałem z trzech narzędzi AI:
 
+- **ChatGPT (OpenAI)** – pierwsza wersja aplikacji: koncepcja i struktura, kod HTML/CSS/JavaScript/SVG, pierwsza wersja filmu i ilustracji oraz pierwsza wersja README; generator obrazów ChatGPT posłużył też do wykonania 5 obrazów do galerii.
 
 - **PixVerse V6 (PixVerse.ai)** – 4 klipy wideo do filmu „Cztery pory roku”, wygenerowane przeze mnie 19.11.2026 w trybie „obraz + tekst” na podstawie opisów z `docs/PROMPTY_FILMU.md`.
 - **Claude (Anthropic)** –  przebudowa interfejsu na pulpit (moduły `pulpit.js`, `mapa.js`, `szukaj.js`, `demo.js`, `opisy.js`, nowe wersje `charts.js`, `symulacja.js`, `galeria.js`, `odtwarzacz.js` i arkuszy CSS, ikony SVG), opisy ujęć do filmu (`docs/PROMPTY_FILMU.md`) i skrypt montażu filmu „Cztery pory roku” z tytułami i syntetyzowaną ścieżką dźwiękową, lokalny serwer `serwer.py`, konwersja obrazów galerii do WebP, sprawdzenie zgodności z instrukcją projektu oraz redakcja dokumentacji.
