@@ -1,9 +1,15 @@
 # MeteoLive PRO – Interaktywne Centrum Pogody
 
+<<<<<<< HEAD
 **Autor:** Karol Szymczak nr albumu 21504
 
 **Adres wdrożenia:** https://karol-szy.github.io/MeteoLive-PRO/
 **Repozytorium Git:** [[https://github.com/Karol-Szy/MeteoLive-PRO.git](https://github.com/Karol-Szy/MeteoLive-PRO.git)]  
+=======
+**Autor:** Karol Szymczak nr albumu 21504 
+**Adres wdrożenia:** [https://karol-szy.github.io/MeteoLive-PRO/]  
+**Repozytorium Git:** [https://github.com/Karol-Szy/MeteoLive-PRO.git]  
+>>>>>>> cff29d6 (README: usunięcie odnośnika do nieistniejącego pliku)
 **Przedmiot:** Interaktywna grafika i wizualizacja danych na stronach WWW, AHNS Radom  
 **Prowadzący:** Artur Podolski
 
@@ -22,7 +28,7 @@ MeteoLive PRO to interaktywny pulpit pogodowy (temat 4 z listy: „Pogoda i klim
 | W5 Multimedia | Film „Cztery pory roku” z własnym odtwarzaczem i dźwiękiem dopasowanym do scen | `media/cztery-pory-roku.mp4`, `media/napisy-pl.vtt`, `js/odtwarzacz.js`, `docs/generuj_film.py` | HTML5 Video API bez domyślnych kontrolek, napisy WebVTT wyświetlane przez własny odtwarzacz (`cuechange`), rozdziały, chowanie panelu podczas odtwarzania | Play/pauza, przewijanie, dźwięk, napisy, pełny ekran, kliknięcie rozdziału |
 | W6 Galeria | Sekcja „Galeria” w układzie bento z powiększonym podglądem (obrazy wygenerowane przez AI) | `js/galeria.js`, `media/galeria/*.webp`, `css/animacje.css` | View Transitions API (płynne przejście miniatura → podgląd i między zdjęciami) z wariantem awaryjnym w CSS | Mysz, klawiatura (strzałki, Escape, Tab), gest przesunięcia palcem |
 | W7 Responsywność i dostępność | Cała aplikacja; na telefonie dolny pasek nawigacji | `css/style.css`, `index.html`, `js/szukaj.js` | Siatka CSS, media queries 360–1920 px, semantyczny HTML, ARIA (combobox, listbox, `aria-live`, `aria-current`), widoczny fokus, kontrast WCAG 2.2 AA | Zmień szerokość okna; obsłuż stronę samą klawiaturą |
-| W8 Jakość kodu | Moduły ES podzielone według funkcji, brak błędów w konsoli | całe repozytorium, `docs/AUDYT.md` | JavaScript ES2020+, moduły ES | Historia commitów w repozytorium; wyniki Lighthouse poniżej |
+| W8 Jakość kodu | Moduły ES podzielone według funkcji, brak błędów w konsoli | całe repozytorium | JavaScript ES2020+, moduły ES | Historia commitów w repozytorium; wyniki Lighthouse poniżej |
 | W9 Wdrożenie | Statyczna aplikacja opublikowana na Netlify | `index.html` i foldery zasobów | Netlify | Adres na początku README, w Chrome lub Firefox |
 
 **Elementy dodatkowe:** dane na żywo z trzech usług Open-Meteo z obsługą błędów (automatyczny tryb demonstracyjny) i stanu ładowania, View Transitions API z wariantem awaryjnym, moduły ES, wyszukiwarka miejscowości obsługiwana klawiaturą, wykresy dostępne z klawiatury i w formie tabeli, zapamiętywanie ostatnio wybranego miasta.
@@ -95,7 +101,7 @@ Projekt jest indywidualny – wszystkie etapy prowadziłem sam, z pomocą narzę
 
 ## Wykorzystanie narzędzi AI
 
-Przy projekcie korzystałem z trzech narzędzi AI:
+Przy projekcie korzystałem z dwuch narzędzi AI:
 
 
 - **PixVerse V6 (PixVerse.ai)** – 4 klipy wideo do filmu „Cztery pory roku”, wygenerowane przeze mnie 19.11.2026 w trybie „obraz + tekst” na podstawie opisów z `docs/PROMPTY_FILMU.md`.
@@ -110,11 +116,8 @@ Pomiar z 14.11.2026, tryb Desktop, wersja lokalna (`http://localhost:5500`), Lig
 
 ## Wdrożenie
 
-Aplikacja jest statyczna, więc nie wymaga budowania. Opublikowana jest na Netlify (adres na początku README). Nowa wersja trafia na stronę przez wgranie paczki z ostatniego commita:
+Aplikacja jest statyczna, więc nie wymaga budowania. Opublikowana jest na GitHub Pages (adres na początku README).
 
-```powershell
-git archive --format=zip -o ..\meteolive-netlify.zip HEAD
-```
 
 ## Znane ograniczenia i dalszy rozwój
 
